@@ -41,7 +41,7 @@ spec:
         - name: COUNTER_FILE_PATH
           value: "/app/data/counter-%d.yaml" 
         - name: TIME_INTERVAL
-          value: "100"
+          value: "3000"
         - name: TIMEOUT
           value: "5000"
         - name: PORT

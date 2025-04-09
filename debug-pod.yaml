@@ -16,8 +16,6 @@ spec:
         mountPath: /app/data/replica-1
       - name: log-replica-pvc-2
         mountPath: /app/data/replica-2
-      - name: log-replica-pvc-3
-        mountPath: /app/data/replica-3
   volumes:
   - name: log-replica-pvc-0
     persistentVolumeClaim:
@@ -28,6 +26,3 @@ spec:
   - name: log-replica-pvc-2
     persistentVolumeClaim:
       claimName: log-replica-volume-log-replica-statefulset-2
-  - name: log-replica-pvc-3
-    persistentVolumeClaim:
-      claimName: log-replica-volume-log-replica-statefulset-3

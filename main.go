@@ -75,10 +75,8 @@ var (
 	config           Config
 	logData          LogEntry
 	logDataMutex     sync.Mutex
-	logFileMutex     sync.RWMutex // Mutex for log file access
 	counterData      ReplicaEntry
 	counterDataMutex sync.Mutex
-	counterFileMutex sync.RWMutex // Mutex for counter file access
 )
 
 func main() {
@@ -250,9 +248,6 @@ func startReplicaServer() {
 }
 
 func readLogFile() error {
-	logDataMutex.Lock() // Lock access to logData
-	defer logDataMutex.Unlock()
-
 	data, err := os.ReadFile(config.LogFilePath)
 	if err != nil {
 		if os.IsNotExist(err) {
@@ -285,9 +280,6 @@ func readLogFile() error {
 }
 
 func readCounterFile() error {
-	counterDataMutex.Lock()
-	defer counterDataMutex.Unlock()
-
 	data, err := os.ReadFile(config.CounterFilePath)
 	if err != nil {
 		if os.IsNotExist(err) {
@@ -313,10 +305,6 @@ func readCounterFile() error {
 }
 
 func writeLogFile() error {
-
-	logFileMutex.RLock() // Lock file write access
-	defer logFileMutex.RUnlock()
-
 	logDataMutex.Lock()
 	defer logDataMutex.Unlock()
 
@@ -329,9 +317,6 @@ func writeLogFile() error {
 }
 
 func writeCounterFile() error {
-	counterFileMutex.RLock() // Lock counter file write access
-	defer counterFileMutex.RUnlock()
-
 	counterDataMutex.Lock()
 	defer counterDataMutex.Unlock()
 
@@ -511,9 +496,6 @@ func overwriteCounterInFile(counter int64) error {
 	defer counterDataMutex.Unlock()
 
 	counterData.Counter = counter
-
-	counterFileMutex.Lock() // Lock counter file write access
-	defer counterFileMutex.Unlock()
 
 	updatedData, err := yaml.Marshal(&counterData)
 	if err != nil {

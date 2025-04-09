@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: debug-pod-log
+spec:
+  containers:
+  - name: alpine
+    image: alpine
+    command:
+      - "sleep"
+      - "3600"  # Keep the container running for testing/debugging
+    volumeMounts:
+      - name: log-replica-pvc-0
+        mountPath: /app/data/replica-0
+      - name: log-replica-pvc-1
+        mountPath: /app/data/replica-1
+      - name: log-replica-pvc-2
+        mountPath: /app/data/replica-2
+      - name: log-replica-pvc-3
+        mountPath: /app/data/replica-3
+  volumes:
+  - name: log-replica-pvc-0
+    persistentVolumeClaim:
+      claimName: log-replica-volume-log-replica-statefulset-0
+  - name: log-replica-pvc-1
+    persistentVolumeClaim:
+      claimName: log-replica-volume-log-replica-statefulset-1
+  - name: log-replica-pvc-2
+    persistentVolumeClaim:
+      claimName: log-replica-volume-log-replica-statefulset-2
+  - name: log-replica-pvc-3
+    persistentVolumeClaim:
+      claimName: log-replica-volume-log-replica-statefulset-3

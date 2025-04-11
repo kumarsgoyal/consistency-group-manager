@@ -409,6 +409,8 @@ func sendCounterToReplica(replicaAddress string, replicaIndex int) {
 		return
 	}
 
+	log.Printf("Dialing gRPC to replica %d at address %s", replicaIndex, replicaAddress)
+
 	// Send the issued counter to the replica via gRPC
 	conn, err := grpc.NewClient(replicaAddress, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
